@@ -53,7 +53,11 @@ export default function CreateFlow() {
         "POST",
         fromData
       );
-      router.push("/");
+      if (response.status === "success") {
+        router.push("/");
+      } else {
+        throw new Error(response.message);
+      }
     } catch (error) {
       console.error("Error creating flow:", error);
     } finally {

@@ -88,11 +88,7 @@ export default function Home() {
     try {
       const formData = new FormData();
       formData.append("flow_id", selectedFlowId);
-      const response = await makeAPIRequest(
-        "videoqa/run-flow/",
-        "POST",
-        formData
-      );
+      await makeAPIRequest("videoqa/run-flow/", "POST", formData);
 
       // First close the dialog and reset loading
       setIsLoading(false);

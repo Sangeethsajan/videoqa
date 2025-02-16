@@ -2,7 +2,6 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Flow } from "../../types";
 import { Trash2 } from "lucide-react";
-import { SquareArrowOutUpRight } from "lucide-react";
 interface FlowCardProps {
   flow: Flow;
   onRunFlow: (flowId: string) => void;
