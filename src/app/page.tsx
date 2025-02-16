@@ -88,6 +88,12 @@ export default function Home() {
     try {
       const formData = new FormData();
       formData.append("flow_id", selectedFlowId);
+      setTimeout(() => {
+        toast.success("Flow Started", {
+          description:
+            "We initiated the flow for you. We will let you know when the flow is completed.",
+        });
+      }, 0);
       await makeAPIRequest("videoqa/run-flow/", "POST", formData);
 
       // First close the dialog and reset loading
@@ -96,9 +102,9 @@ export default function Home() {
 
       // Then show the toast
       setTimeout(() => {
-        toast.success("Flow Started", {
+        toast.success("Flow Completed", {
           description:
-            "We initiated the flow for you. You will get the results soon.",
+            "You can check the results in the output document provided.",
         });
       }, 0);
     } catch (error) {
