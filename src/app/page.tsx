@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Jumbotron } from "@/components/ui/Jumbotron";
 import { FlowCard } from "@/components/ui/FlowCard";
-import { Flow } from "@/types";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Loader2 } from "lucide-react";
 import { toast, Toaster } from "sonner";
+
+import { Flow } from "@/types";
 import makeAPIRequest from "@/services/apiservices";
 
 export default function Home() {
@@ -29,22 +31,25 @@ export default function Home() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    // Fetch flows from backend
     fetchFlows();
   }, []);
 
+  const handleRunFlow = (flowId: string) => {
+    setSelectedFlowId(flowId);
+    setShowConfirmDialog(true);
+  };
+  const handleDelete = (flowId: string) => {
+    setSelectedFlowId(flowId);
+    setShowDeleteDialog(true);
+  };
+  // Fetch flows from the backend
   const fetchFlows = async () => {
     try {
       const userId = localStorage.getItem("video_userId");
       if (!userId) return;
       const formData = new FormData();
       formData.append("user_id", userId);
-      /*
-      const response = await fetch("http://localhost:8000/videoqa/get-flows/", {
-        body: formData,
-        method: "POST",
-      });
-      */
+
       const data = await makeAPIRequest("videoqa/get-flows/", "POST", formData);
       setFlows(data);
     } catch (error) {
@@ -52,15 +57,7 @@ export default function Home() {
     }
   };
 
-  const handleRunFlow = (flowId: string) => {
-    setSelectedFlowId(flowId);
-    setShowConfirmDialog(true);
-  };
-  const handleDelete = (flowId: string) => {
-    setShowDeleteDialog(true);
-    setSelectedFlowId(flowId);
-  };
-
+  //Delete flow
   const handleConfirmDelete = async () => {
     if (!selectedFlowId) return;
 
@@ -80,7 +77,7 @@ export default function Home() {
       setShowDeleteDialog(false);
     }
   };
-
+  // Run flow
   const handleConfirmRun = async () => {
     if (!selectedFlowId) return;
 
@@ -146,6 +143,7 @@ export default function Home() {
                 flow={flow}
                 onRunFlow={handleRunFlow}
                 onDeleteFlow={handleDelete}
+                isLoading={isLoading}
               />
             ))}
             <Toaster richColors />

@@ -2,16 +2,20 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Flow } from "../../types";
 import { Trash2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+
 interface FlowCardProps {
   flow: Flow;
   onRunFlow: (flowId: string) => void;
   onDeleteFlow: (flowId: string) => void;
+  isLoading: boolean;
 }
 
 export const FlowCard: React.FC<FlowCardProps> = ({
   flow,
   onRunFlow,
   onDeleteFlow,
+  isLoading,
 }) => {
   return (
     <Card className="w-full">
@@ -60,7 +64,13 @@ export const FlowCard: React.FC<FlowCardProps> = ({
       </CardContent>
       <CardFooter>
         <Button onClick={() => onRunFlow(flow.flow_id)} className="w-full">
-          Run Flow
+          {isLoading ? (
+            <>
+              Running <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            </>
+          ) : (
+            "Run Flow"
+          )}
         </Button>
       </CardFooter>
     </Card>
